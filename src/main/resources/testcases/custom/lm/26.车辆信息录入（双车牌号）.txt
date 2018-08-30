@@ -1,0 +1,56 @@
+##26.车辆信息录入（双车牌号）
+#浏览器
+使用chrome
+等待 5000
+#浏览
+浏览 https://test.ulian168.com/
+#等待 单位毫秒
+等待 1000
+#点击登录
+点击 xpath=//*[@id="tx_login"]
+#设置用户名
+设置 xpath=//*[@id="txt_loginphone"] 18888888888
+#设置密码
+设置 xpath=//*[@id="pwd"] 123456
+#点击登录
+点击 xpath=//*[@id="login_box"]/div/div[2]/div/input
+#等待5
+等待 5000
+#点击个人中心
+点击 xpath=//*[@id="contractHead"]/div/ul/li[6]/a
+#点击车辆管理
+点击 xpath=//*[@id="nav5"]
+#点击车辆信息录入
+点击 xpath=//*[@id="carManage"]/div/div[2]/div[1]/div[2]/div[2]/a[2]
+#点击车辆类型
+点击 id=car_type
+#选择车辆类型
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[1]/ul/li[1]
+#设置车头车牌号
+设置 id=frontlicense 湘M52412
+#设置车尾车牌号
+设置 id=postlicense 湘N5412挂
+#点击车辆所属
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[5]/input
+#设置车货总质量
+设置 id=totalMass 55
+#设置车辆自重
+设置 id=selfMass 20
+#上传车头行驶证
+上传 //*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[12]/div[1]/div[1]/input[2] \image\微信图片_20171124160517.png
+#上传车尾行驶证
+上传 //*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[12]/div[1]/div[2]/input[2] \image\微信图片_20180620155302.jpg
+#上传车头营运证
+上传 //*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[12]/div[2]/div[1]/input[2] \image\微信图片_20180620155239.jpg
+#上传车尾营运证
+上传 //*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[12]/div[2]/div[2]/input[2] \image\微信图片_20180706104729.jpg
+#点击保存
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[13]/input
+#等待 5
+等待 5000
+#点击返回车辆信息展示
+点击 xpath=//*[@id="app"]/div[1]/div/div[2]/div[2]/a[2]
+#等待 2
+等待 2000
+#存在
+存在 湘M52412

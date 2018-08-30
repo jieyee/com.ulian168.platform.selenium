@@ -1,0 +1,18 @@
+##测试webconsole控制台
+#浏览器
+使用chrome
+#浏览
+浏览 http://localhost:8090/
+等待 1000
+#动作
+设置  name=username admin
+设置  name=password lsh.0904
+截图
+等待 1000
+点击 id=login
+等待 1000
+获取 浏览器title lsh_v1
+设置 [lshv2] "基于Docker的冒烟环境..."
+等于 lsh_v1 lshv2
+#收尾, 貌似无需点注销，当是例子好了
+点击 xpath=//*[@id="nav"]/nav/form/button

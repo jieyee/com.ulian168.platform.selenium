@@ -1,0 +1,17 @@
+##创名家
+##测试打开chrome
+使用safari
+#浏览
+浏览 https://www.baidu.com
+#等待 单位毫秒
+等待 1000
+#动作
+设置 id=kw 创名家
+点击 id=su
+#等待2
+等待 2000
+#取值，变量 t1_v1 = 浏览器title
+获取 浏览器title lsh_v1
+设置 [lshv2] G7物流地图_百度搜索
+等待 2000
+等于 lsh_v1 lshv2

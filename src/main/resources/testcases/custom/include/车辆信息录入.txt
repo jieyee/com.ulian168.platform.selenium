@@ -1,0 +1,30 @@
+##模块.车辆信息录入（单车牌号）
+#进入车辆管理
+浏览 https://test.ulian168.com/carmanage.html
+#点击车辆信息录入
+点击 xpath=//*[@id="carManage"]/div/div[2]/div[1]/div[2]/div[2]/a[2]
+#选择车辆类型
+点击 xpath=//*[@id="car_type"]
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[1]/ul/li[5]/span[1]
+#录入车牌号
+设置 xpath=//*[@id="car_number"] 鄂Z23456
+#录入车辆所有人
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[5]/input
+#录入车辆重量
+设置 xpath=//*[@id="totalMass"] 2
+#录入车自重
+设置 xpath=//*[@id="selfMass"] 1
+#上传行驶证
+上传 //*[@id="carlisence"]/div[1]/input[2] \image\微信图片_20171124160517.png
+#上传营运证
+上传 //*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[11]/div[2]/div[1]/input[2] \image\微信图片_20180620155239.jpg
+#点击保存
+点击 xpath=//*[@id="app"]/div[2]/div[2]/div/div[2]/form/div[13]/input
+#等待 1
+等待 1000
+#点击返回
+点击 xpath=//*[@id="app"]/div[1]/div/div[2]/div[2]/a[2]
+#等待 1
+等待 1000
+#存在
+存在 鄂Z23456

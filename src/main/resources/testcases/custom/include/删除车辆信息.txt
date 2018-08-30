@@ -1,0 +1,15 @@
+##模块.删除车辆信息
+#等待 2
+等待 2000
+#进入车辆管理
+浏览 https://test.ulian168.com/carmanage.html
+#等待 2
+等待 2000
+#点击删除
+点击 xpath=//*[@id="carManage"]/div/div[2]/div[1]/div[2]/ul[1]/li[1]/div[4]/a[2]
+#点击确定
+点击 xpath=//*[@id="carManage"]/div[1]/div/p[2]/a[1]
+#等待 2
+等待 2000
+#判断删除成功
+存在 删除成功

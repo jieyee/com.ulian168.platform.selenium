@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head th:include="fragments/h5_header::baseCss">
+
+</head>
+<body class="gray-bg">
+<div class="loginColumns animated fadeInDown">
+    <div class="row">
+        <div class="col-md-6 col-sm-offset-3">
+            <div class="ibox-content">
+                <div class="widget red-bg p-lg text-center">
+                    <div class="m-b-md">
+                        <i class="fa fa-bell fa-4x "></i>
+                        <h1 class="m-xs error-status" th:text="${status}"/>
+                        <h3 class="font-bold no-margins error-message" th:text="${i18nmessage}"/>
+                        <small></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<th:block th:include="fragments/h5_header::baseJs"/>-->
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
+</body>
+</html>

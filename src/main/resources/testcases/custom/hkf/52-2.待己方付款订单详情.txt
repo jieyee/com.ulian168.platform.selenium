@@ -1,0 +1,37 @@
+##52-2待己方付款订单详情
+#浏览器
+使用chrome
+等待 5000
+#浏览
+浏览 http://192.168.0.126:8090/
+#等待 单位毫秒
+等待 1000
+#点击登录
+点击 xpath=//*[@id="tx_login"]
+#设置用户名
+设置 xpath=//*[@id="txt_loginphone"] 13888888888
+#设置密码
+设置 xpath=//*[@id="pwd"] 123456
+#点击登录
+点击 xpath=//*[@id="login_box"]/div/div[2]/div/input
+#等待10
+等待 5000
+#调转我的订单页
+浏览 http://192.168.0.126:8090/allOrder.html
+#等待2
+等待 2000
+#点击订单状态
+点击 xpath=//*[@id="app"]/div[4]/div/div[2]/div[1]/div[3]/span[3]/input
+点击 xpath=//*[@id="app"]/div[4]/div/div[2]/div[1]/div[3]/span[3]/ul/li[2]/span
+#查询
+点击 xpath=//*[@id="app"]/div[4]/div/div[2]/div[1]/a[1]
+#等待2
+等待 2000
+#存在
+存在 合同名称（编号）
+#点击订单详情
+点击 xpath=//*[@id="app"]/div[4]/div/div[2]/div[2]/div/div/ul/li[3]/p[2]
+#等待2
+等待 2000
+#存在
+存在 去为此订单进行支付

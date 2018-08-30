@@ -1,0 +1,11 @@
+spring.profiles.active: pj
+
+# security.basic.enabled: false
+management: 
+  port: 9999
+  context-path: "/manageActuator"
+  security: 
+    enabled: false
+#     roles: SUPERUSER
+# security.user.name: yyy
+# security.user.password: yyy

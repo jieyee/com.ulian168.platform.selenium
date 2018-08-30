@@ -1,0 +1,51 @@
+server:
+ port: 8889
+ 
+spring:
+ devtools:
+  restart:
+   exclude: static/**
+   enabled: true
+ thymeleaf:
+  cache: false
+  mode: LEGACYHTML5
+ aop:
+  auto: true
+  proxy-target-class: true
+ kafka: 
+  bootstrap-servers: "localhost:9092"
+  consumer:
+   max-poll-records: 50
+   group-id: smoketest
+  listener:
+   concurrency: 3 
+ datasource:
+  url: jdbc:mysql://192.168.0.183:3307/selenium?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: root 
+ulian168:
+ cluster: true
+ configuration:
+  #显式等待超时时间
+  explicitWaitTimeOut: 0
+  # 隐式等待超时时间
+  implicitlyWaitTimeOut: 15 
+ chrome:
+  driver: "E:/filedata/project/zd/ChromeDriver.exe"
+  switch: "--incognito"
+  options: "--test-type"
+ ie:
+  driver: "D:/dev/tools/IEDriverServer.exe"
+ edge:
+  driver: "D:/dev/tools/MicrosoftWebDriver.exe"
+ geckodriver:
+  driver: "D:/dev/tools/geckodriver.exe"
+ firefix:
+  driver: "D:/Program Files/Firefox/firefox.exe"
+ kafka:
+  topic: smoketesttopic
+  
+
+platform.casePath: "E:/git/workgit/gitlab/com.ulian168.platform.selenium/src/main/resources/testcases"
+  

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>优联科技自动化测试平台</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{css/style.css}"/>
+    <link rel="shortcut icon" th:href="@{/icon/cmj.png}">
+</head>
+<body onload="document.form.username.focus();" class="gray-bg">
+<div class="loginColumns animated fadeInDown">
+    <div class="row">
+        <div class="col-md-6 col-sm-offset-3">
+            <div class="ibox-content">
+                <p th:if="${param.logout}" class="alert">已登出</p>
+                <p th:if="${param.error}" class="alert alert-error">登录出错了</p>
+                <h2>优联科技冒烟测试平台</h2><br/>
+                <form name="form" th:action="@{/login}" action="/login" method="POST">
+                    <fieldset>
+                        <div class="form-group has-feedback ">
+                            <input type="phone" class="form-control" name="username" value="" placeholder="用户"/>
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            <input type="password" class="form-control" placeholder="密码" name="password"/>
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        </div>
+                    </fieldset>
+                    <input type="submit" id="login" value="登陆"
+                           class="btn btn-primary btn-block btn-flat"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-offset-3">
+            ©优联科技 2018 由优联科技技术团队研发
+        </div>
+    </div>
+</div>
+</body>
+</html>

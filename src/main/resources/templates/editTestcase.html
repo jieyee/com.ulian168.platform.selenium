@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cmn-Hans">
+</head>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var caseName = [[${caseName}]];
+        
+        var levels = caseName.split("_")
+        $("#breadcrumb").append("<li><a href='#'>testcases</a></li>");
+        $.each(levels, function(index, level) {
+            if(level != "") {
+                $("#breadcrumb").append("<li><a href='#'>" + level + "</a></li>")
+            }
+        });
+        
+        //打开详细编辑页面，新增和编辑共用.
+        function editTestCaseDetail(row) {
+            BootstrapDialog.show({
+              title: '编辑步骤',
+              closable: false,
+              message: $('<div></div>').load('/editTestcaseDetail', {"row": row}),
+              buttons:[{
+                  label:"确定",
+                  action:function(selfDialog){
+                      debugger;
+                      var detail = getCaseDetail();
+                      var rows = $("#datagrid").bootgrid("getCurrentRows");
+                      //修改和新增.
+                      if (detail.id != "" && detail.id) {
+                        rows.splice(detail.id, 1, detail);
+                      } else {
+                        rows.push(detail);
+                      }
+                      $("#datagrid").bootgrid("setCurrentRows", rows);
+                      save();
+                      selfDialog.close();
+                  }
+              },{
+                  label:"取消",
+                  cssClass: 'maoyan',
+                  action:function(selfDialog){
+                      selfDialog.close();
+                  }
+              }]
+          });
+        }
+        
+        function loadGrid() {
+            $("#datagrid").bootgrid({
+                ajax: true,
+                ajaxSettings: {
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "json"
+                },
+                post: function () {
+                    var data = {};
+                    return data;
+                },
+                requestHandler: function (request) {
+                    return JSON.stringify(request);
+                },
+                url: Bright.contextPath+"/caseDetail?caseName=" + caseName,
+                formatters: {
+                    "link": function (column, row) {
+                        var eHtml = "<a href='#' class='btn btn-info btn-xs row-edit' data-id='" + row.id + "'>编辑</a>"
+                        var dHtml = "<a href='#' class='btn btn-danger btn-xs row-delete' data-id='" + row.id + "'>删除</a>"
+                        return eHtml + "&nbsp;" + dHtml;
+                    },
+                    "name": function (column, row) {
+                        return row.name;
+                    }
+                },
+                navigation: 0
+            }).on("loaded.rs.jquery.bootgrid", function (e) {
+                $('.row-edit').each(function (i, row) {
+                    var rows = $("#datagrid").bootgrid("getCurrentRows");
+                    var rowText = JSON.stringify(rows[i]);
+                    
+                    $(row).click(function (e) {
+                        e.preventDefault(e);
+                        editTestCaseDetail(rowText);
+                    });
+                });
+                $('.row-delete').each(function (i, row) {
+                    $(row).click(function (e) {
+                        e.preventDefault(e);
+                        $('[data-row-id="'+$(row).attr('data-id')+'"]').remove();
+                        //$("#datagrid").bootgrid("remove", [$(row).attr('data-id')]);
+                        var rows = $("#datagrid").bootgrid("getCurrentRows");
+                        rows.splice($(row).attr('data-id'),1);
+                        $("#datagrid").bootgrid("setCurrentRows", rows);
+                    });
+                });
+            });
+        }
+    
+        function getTestcaseVO() {
+            var vo = {};
+            var rows = $("#datagrid").bootgrid("getCurrentRows");
+            vo.caseName = caseName;
+            vo.caseDescName = $("#testcaseDesc").text();
+            vo.steps = rows;
+            return vo;
+        }
+        
+        loadGrid();
+        
+        function runCase() {
+            $.ajax({
+                type: "POST",
+                contentType:"application/json;charset=utf-8",
+                url: "/executeTestCase?caseName=" + caseName,
+                success: function(json){
+                    var hint = "";
+                    if (json && json.retMsg == "OK") {
+                        //myAlert(json.retMsg);
+                        hint = "成功";
+                    } else {
+                        //myAlert(json.retMsg);
+                        hint = "失败";
+                    }
+                    
+                    BootstrapDialog.show({
+                      title: '提示',
+                      closable: false,
+                      message: "执行" + hint + "，要查看报告吗",
+                      buttons:[{
+                          label:"确定",
+                          action:function(selfDialog){
+                              selfDialog.close();
+                              window.open("report.html?path=" + json.report);  
+                          }
+                      },{
+                          label:"取消",
+                          action:function(selfDialog){
+                              selfDialog.close();
+                          }
+                      }]
+                  });
+                      
+                },
+                error: function(response){
+                    myAlert(response.responseText);
+                }
+            });
+        }
+        
+        
+        
+        $("#runCase").click(runCase);
+        $("#addCasedetail").click(function(){
+          editTestCaseDetail("");
+        });
+        $("#refreshCase").click(function(){
+            BootstrapDialog.show({
+                title: '你确定吗',
+                closable: false,
+                message: "刷新将放弃编辑的所有步骤",
+                buttons:[{
+                    label:"确定",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                        $("#datagrid").bootgrid("reload");
+                    }
+                },{
+                    label:"取消",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                        //放弃刷新
+                    }
+                }]
+            });
+        });
+        
+        function save() {
+          var data = getTestcaseVO();
+          $.ajax({
+              type: "POST",
+              url: "/saveTestcase",
+              contentType:"application/json;charset=utf-8",
+              dataType: "json",
+              data: JSON.stringify(data),
+              success: function(json){
+                  if(json.retMsg && json.retMsg == "OK"){
+                      BootstrapDialog.show({
+                          title: '提示',
+                          message: "保存成功!",
+                          buttons:[{
+                              label:"确定",
+                              action:function(selfDialog){
+                                  selfDialog.close();
+                                  $("#datagrid").bootgrid("reload");
+                              }
+                          }]
+                      });
+                  }
+              },
+              error: function(response){
+                  BootstrapDialog.show({
+                      title: '错误提示',
+                      message: response.responseText
+                  }); 
+              }
+          });
+        }
+        $("#saveCase").click(function(){
+            BootstrapDialog.show({
+                title: '提示',
+                closable: false,
+                message: "保存测试用例?",
+                buttons:[{
+                    label:"确定",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                        save();
+                    }
+                },{
+                    label:"取消",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                        //放弃
+                    }
+                }]
+            }); 
+        });
+        
+        $("#delCase").click(function(){
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_WARNING, 
+                title: '提示',
+                closable: false,
+                message: '您确定要删除测试用例吗?',
+                buttons: [{
+                        label: '确定',
+                        cssClass: 'btn-warning',
+                        action: function(dialogItself){
+                            $.ajax({
+                                type: "GET",
+                                url: "/delTestcase?caseName=" + caseName, 
+                                dataType: "json",
+                                success: function(data){
+                                    if(data.retMsg && data.retMsg == "OK"){
+                                        BootstrapDialog.show({
+                                            title: '提示',
+                                            message: "删除成功!",
+                                            buttons:[{
+                                                label:"确定",
+                                                action:function(selfDialog){
+                                                    selfDialog.close();
+                                                    //window.location.reload();
+                                                    var oldNode = Bright.node;
+                                                    //low 的 一笔，非要整形
+                                                    var parentNode = $('#tree').treeview('getParent', Number(oldNode.attr("data-nodeid")));
+                                                    Bright.loadTree();
+                                                    $('#tree').treeview('revealNode', [parentNode.nodeId, { levels: 5, silent: true } ]);
+                                                    $('#tree').treeview('expandNode', [parentNode.nodeId, { levels: 1, silent: true } ]);
+                                                    $(".wrapper-content").empty();
+                                                }
+                                            }]
+                                        });
+                                    }
+                                },
+                                error: function(response){
+                                    BootstrapDialog.show({
+                                        title: '错误提示',
+                                        message: response.responseText
+                                    }); 
+                                }
+                            });
+                            dialogItself.close();
+                        }
+                    },  {
+                        label: '取消',
+                        cssClass: 'btn-warning',
+                        action: function(dialogItself){
+                            dialogItself.close();
+                        }
+                    }]
+                });
+        });
+        
+        $("#showTestcase").click(function(e){
+          e.preventDefault(e);
+          Bright.loadPage('showTestcase?caseName=' + caseName + '&testcaseDesc=' + $("#testcaseDesc").text());
+        });
+        
+        function myAlert(msg){
+            BootstrapDialog.show({
+                title: '提示',
+                closable: false,
+                message: msg,
+                buttons:[{
+                    label:"关闭",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                    }
+                }]
+            });
+        }
+        
+        $('#addCase').on('click',function(){
+           $("#datagrid").append([]);
+        });
+    });
+</script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox-content">
+            <div>
+                <button class="btn btn-info" id="showTestcase">文本模式</button>
+                <button class="btn btn-primary" id="saveCase">保存</button>
+                <button class="btn btn-success" id="runCase">运行</button>
+                <button class="btn btn-warning" id="refreshCase">刷新</button>
+                <button class="btn btn-info" id="addCasedetail">添加</button>
+                <button class="btn btn-danger" id="delCase">删除</button>
+            </div>
+            <div><hr/></div>
+            <div>
+                <ol class="breadcrumb" id="breadcrumb">
+                </ol>
+            </div>
+            <div>
+                <span id="testcaseDesc" th:text="${testcaseDesc}"></span>
+            </div>
+            <div><hr/></div>
+            <table id="datagrid" class="table table-condensed table-hover table-striped"
+                   style="word-break:break-all; word-wrap:break-all;">
+                <thead>
+                <tr>
+                    <th data-column-id="id" data-visible="false">次序</th>
+                    <th data-column-id="name">行为</th>
+                    <th data-column-id="paramType1">参数类型1</th>
+                    <th data-column-id="param1">参数1</th>
+                    <th data-column-id="paramType2">参数类型2</th>
+                    <th data-column-id="param2">参数2</th>
+                    <th data-column-id="desc">描述</th>
+                    <th data-column-id="link" data-formatter="link" data-sortable="false">操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

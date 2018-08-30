@@ -1,0 +1,18 @@
+﻿{
+	"processing": "加载中...",
+	"lengthMenu": "每页 _MENU_ 条记录",
+	"zeroRecords": "没有记录.",
+	"emptyTable": "没有记录.",
+	"info": "显示 _START_ 到 _END_ 条,总计 _TOTAL_ 条记录",
+	"infoEmpty": "没有记录",
+	"infoFiltered": "(从 _MAX_ 条记录过滤)",
+	"infoPostFix": "",
+	"search": "表内搜索",
+	"url": "",
+	"paginate": {
+		"first":    "首页",
+		"previous": "上页",
+		"next":     "下页",
+		"last":     "尾页"
+	}
+}

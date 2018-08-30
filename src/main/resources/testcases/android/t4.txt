@@ -1,0 +1,10 @@
+##测试安装
+使用safari
+浏览 http://localhost:8889
+设置 name=username admin
+设置 name=password lsh.0904
+点击 id=login
+点击 xpath=//*[@id="tree"]/ul/li[4]/span[2]
+点击 xpath=//*[@id="tree"]/ul/li[5]/a
+点击 xpath=//*[@id="datagrid"]/tbody/tr[8]/td[7]/a[1]
+点击 cssSelector=.maoyan

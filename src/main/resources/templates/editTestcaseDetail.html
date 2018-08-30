@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cmn-Hans">
+<style>
+   .modal-dialog {
+        width: 420px;
+    }
+</style>
+</head>
+<script th:inline="javascript">
+  function getCaseDetail() {
+      var detail = {};
+      detail.id = $("#did").val();
+      detail.name = $("#dname").val();
+      detail.desc = $("#ddesc").val();
+      var t1 = $("#dparamType1").val();
+      if ("请选择" != t1) {
+        detail.paramType1 = t1;
+        detail.param1 = $("#dparam1").val();
+      }
+      var t2 = $("#dparamType2").val();
+      if ("请选择" != t2) {
+        detail.paramType2 = t2;
+        detail.param2 = $("#dparam2").val();
+      }
+      return detail;
+  }
+  
+  function setDefault() {
+    $("#ddesc").val("");
+    $("#dparamType1").val("请选择");
+    $("#dparam1").val("");
+    $("#dparamType2").val("请选择");
+    $("#dparam2").val("");
+  }
+    
+  $(document).ready(function() {
+      //alert("edit test case detail");
+      var row = [[${row}]];
+      //alert(row);
+      var jsonRow;
+      if (row) {
+        jsonRow = JSON.parse(row);
+      }
+      //alert(jsonRow.id);
+      var metadata = $.ajax({url: "/metadata", async: false}).responseJSON;
+      var $dname = $("#dname");
+      $.each(metadata, function(k,v){
+        $("<option>" + k + "</option>").appendTo($dname);
+      });
+      //alert(metadata[jsonRow.name]);
+      
+      if (row && jsonRow) {
+        $("#did").val(jsonRow.id);
+        if (jsonRow.name) {
+          $("#dname").val(jsonRow.name);
+        }
+        if (jsonRow.desc) {
+          $("#ddesc").val(jsonRow.desc);
+        }
+        if (jsonRow.paramType1) {
+          $("#dparamType1").val(jsonRow.paramType1);
+        }
+        if (jsonRow.param1) {
+          $("#dparam1").val(jsonRow.param1);
+        }
+        if (jsonRow.paramType2) {
+          $("#dparamType2").val(jsonRow.paramType2);
+        }
+        if (jsonRow.param2) {
+          $("#dparam2").val(jsonRow.param2);
+        }
+      }
+      
+      $("#dname").change(function(){
+        setDefault();
+      })
+  });
+</script>
+</head>
+<body>
+ <form class="form-horizontal">
+  <div class="form-group" style="display:none;">
+    <label for="did" class="col-sm-3 control-label">id</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="did" placeholder="id">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="ddesc">描述</label>
+    <div class="col-sm-9">
+      <input type="text" placeholder="描述" class="form-control" id="ddesc">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="dname" class="col-sm-3 control-label">行为</label>
+    <div class="col-sm-9">
+      <select class="form-control" id="dname">
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+      <label for="dparamType1" class="col-sm-3 control-label">参数类型1</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="dparamType1">
+            <option>请选择</option>
+            <option>常量</option>
+            <option>变量</option>
+        </select>
+      </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="dparam1">参数1</label>
+    <div class="col-sm-9">
+      <input type="text" placeholder="参数1" class="form-control" id="dparam1">
+    </div>
+  </div>
+  <div class="form-group">
+      <label for="dparamType2" class="col-sm-3 control-label">参数类型2</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="dparamType2">
+            <option>请选择</option>
+            <option>常量</option>
+            <option>变量</option>
+        </select>
+      </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="dparam1">参数2</label>
+    <div class="col-sm-9">
+      <input type="text" placeholder="参数2" class="form-control" id="dparam2">
+    </div>
+  </div>
+</form>
+</body>
+</html>
+

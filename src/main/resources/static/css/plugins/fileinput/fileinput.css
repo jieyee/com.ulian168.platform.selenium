@@ -1,0 +1,31 @@
+.fileinput-wrapper {
+    display: block;
+}
+.fileinput {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+}
+.fileinput input[type=file],
+.fileinput input[type=file]:focus,
+.fileinput input[type=file]:hover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+    direction: ltr;
+    cursor: pointer;
+    outline: 0;
+}
+.fileinput-name {
+    margin-left: 8px;
+}
+.fileinput-name .close {
+    float: none;
+    margin-left: 8px;
+    vertical-align: middle;
+}

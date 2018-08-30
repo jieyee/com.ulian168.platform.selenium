@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/header::baseCssAndJs">
+    <title th:text="'Hello, ' + ${name} + '!'"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:text="'橘客,'  + ${name}"/>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="/logout">登出</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search..."/>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="zTreeDemoBackground left">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+
+            <div id="smsFuncTabs" class="easyui-tabs" style="height:auto">
+                <div title="首页" style="padding:10px;display:none;" sec:authorize="hasRole('HOME')">
+                    首页
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-header" th:replace="fragments/footer::footer">&copy; 2014 The Static Templates</div>
+    </div>
+</nav>
+<link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+<script th:src="@{/js/sms/home.js}"></script>
+</body>
+
+<!--<style type="text/css">-->
+<!--.ztree li a.level0 {width:200px;height: 20px; text-align: center; display:block; background-color: #0B61A4; border:1px silver solid;}-->
+<!--.ztree li a.level0.cur {background-color: #66A3D2; }-->
+<!--.ztree li a.level0 span {display: block; color: white; padding-top:3px; font-size:12px; font-weight: bold;word-spacing: 2px;}-->
+<!--.ztree li a.level0 span.button {	float:right; margin-left: 10px; visibility: visible;display:none;}-->
+<!--.ztree li span.button.switch.level0 {display:none;}-->
+<!--</style>-->
+</html>

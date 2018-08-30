@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cmn-Hans">
+</head>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var caseName = [[${caseName}]];
+        var content = [[${content}]];
+        var testcaseDesc = [[${testcaseDesc}]];
+        //$("#content").html("<pre>" + content + "</pre>");
+        
+        $("#content").html("<textarea class='form-control' rows='25' id='caseContent'>" + content + "</textarea>");
+        
+        var levels = caseName.split("_")
+        $("#breadcrumb").append("<li><a href='#'>testcases</a></li>");
+        $.each(levels, function(index, level) {
+            if(level != "") {
+                $("#breadcrumb").append("<li><a href='#'>" + level + "</a></li>")
+            }
+        });
+        
+        $("#run").click(run);
+        $("#saveCaseContent").click(saveCaseContent);
+        $("#editTestcase").click(function(e){
+          e.preventDefault(e);
+          Bright.loadPage('editTestCase?caseName=' + caseName + '&testcaseDesc=' + testcaseDesc);
+        });
+        
+        function run() {
+            $.ajax({
+                type: "POST",
+                contentType:"application/json;charset=utf-8",
+                url: "/executeTestCase?caseName=" + caseName,
+                success: function(json){
+                    if (json && json.retMsg == "OK") {
+                        myAlert(json.retMsg);
+                    } else {
+                        myAlert(json.retMsg);
+                    }
+                },
+                error: function(response){
+                    myAlert(response.responseText);
+                }
+            });
+        }
+        
+        function saveCaseContent() {
+            var data = {};
+            data.caseName = caseName;
+            data.content = $("#caseContent").val();
+            $.ajax({
+                type: "POST",
+                url: "/saveCaseContent",
+                data: "caseName=" + caseName + "&content=" + $("#caseContent").val(),
+                success: function(json){
+                    if (json && json.retMsg == "OK") {
+                        myAlert(json.retMsg);
+                    } else {
+                        myAlert(json.retMsg);
+                    }
+                },
+                error: function(response){
+                    myAlert(response.responseText);
+                }
+            });
+        }
+        
+        function myAlert(msg){
+               BootstrapDialog.show({
+                title: '提示',
+                closable: false,
+                message: msg,
+                buttons:[{
+                    label:"关闭",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                    }
+                }]
+            }); 
+        }
+    });
+</script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox-content">
+            <div>
+                <button class="btn btn-info" id="editTestcase">步骤模式</button>
+                <button class="btn btn-primary" id="saveCaseContent">保存</button>
+                <button class="btn btn-success" id="run">运行</button>
+            </div>
+            <div><hr/></div>
+            <div>
+                <ol class="breadcrumb" id="breadcrumb">
+                </ol>
+            </div>
+            <div>
+                <span id="testcaseDesc" th:text="${testcaseDesc}"></span>
+            </div>
+            <div><hr/></div>
+            <div id="content">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

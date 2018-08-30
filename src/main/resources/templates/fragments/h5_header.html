@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cmn-Hans">
+<head th:fragment="baseCss">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}"/>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+
+    <!-- IonRangeSlider -->
+    <link rel="stylesheet" th:href="@{/css/plugins/ionRangeSlider/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/ionRangeSlider/ion.rangeSlider.skinHTML5.css}"/>
+    <!--dropzone-->
+    <link th:href="@{/css/plugins/dropzone/basic.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/dropzone/dropzone.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/codemirror/codemirror.css}" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <!-- Morris Charts CSS -->
+    <link th:href="@{/css/plugins/morris/morris-0.4.3.min.css}" rel="stylesheet"/>
+    <!-- Custom Fonts -->
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet"/>
+    <!-- DataGrid -->
+    <link rel="stylesheet" th:href="@{/css/plugins/jquery-bootgrid/jquery.bootgrid.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/chosen/chosen.css}"/>
+
+    <!-- Toastr style -->
+    <link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link th:href="@{/h5/plugins/gritter/jquery.gritter.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/bootstrap3-dialog/bootstrap-dialog.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/datepicker/daterangepicker.css}" rel="stylesheet">
+
+    <link th:href="@{/bootstrap-treeview-1.2.0/bootstrap-treeview.css}" rel="stylesheet">
+
+    <link th:href="@{/bootstrap3-editable/css/bootstrap-editable.css}" rel="stylesheet">
+
+    <title>优联科技冒烟测试平台</title>
+</head>
+<body>
+
+
+<th:block th:fragment="baseJs">
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/h5/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+    <script th:src="@{/h5/plugins/placeholders/placeholders.js}"></script>
+    <script th:src="@{/h5/plugins/select2/select2.js}"></script>
+
+    <!-- Flot -->
+    <script th:src="@{/h5/plugins/flot/jquery.flot.js}"></script>
+    <script th:src="@{/h5/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+    <script th:src="@{/h5/plugins/flot/jquery.flot.spline.js}"></script>
+    <script th:src="@{/h5/plugins/flot/jquery.flot.resize.js}"></script>
+    <script th:src="@{/h5/plugins/flot/jquery.flot.pie.js}"></script>
+
+    <!-- Peity -->
+    <script th:src="@{/h5/plugins/peity/jquery.peity.min.js}"></script>
+    <!--dropzone-->
+    <script th:src="@{/h5/plugins/dropzone/dropzone.js}"></script>
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/h5/plugins/pace/pace.min.js}"></script>
+
+    <!-- Jasny -->
+    <script th:src="@{/h5/plugins/jasny/jasny-bootstrap.min.js}"></script>
+
+    <!-- CodeMirror -->
+    <script th:src="@{/h5/plugins/codemirror/codemirror.js}"></script>
+    <script th:src="@{/h5/plugins/codemirror/mode/xml/xml.js}"></script>
+
+    <script th:src="@{/h5/plugins/bootstrap3-dialog/bootstrap-dialog.js}"></script>
+
+    <!-- IonRangeSlider -->
+    <script th:src="@{/h5/plugins/ionRangeSlider/ion.rangeSlider.min.js}"/>
+
+    <!-- jQuery UI -->
+    <script th:src="@{/h5/plugins/jquery-ui/jquery-ui.min.js}"></script>
+
+    <!-- GITTER -->
+    <script th:src="@{/h5/plugins/gritter/jquery.gritter.min.js}"></script>
+
+    <!-- Sparkline -->
+    <script th:src="@{/h5/plugins/sparkline/jquery.sparkline.min.js}"></script>
+
+    <!-- ChartJS-->
+    <script th:src="@{/h5/plugins/chartJs/Chart.min.js}"></script>
+
+    <!-- Toastr -->
+    <script th:src="@{/h5/plugins/toastr/toastr.min.js}"></script>
+
+    <script th:src="@{/js/jquery.tmpl.min.js}"></script>
+    <script th:src="@{/js/jquery.tmplPlus.min.js}"></script>
+
+    <!-- Bootstrap validator -->
+    <script th:src="@{/h5/plugins/bootstrap-validator/js/validator.js}"></script>
+    <!--  DATAGRID plugin -->
+    <script th:src="@{/h5/plugins/jquery-bootgrid/jquery.bootgrid.js}"></script>
+    <script th:src="@{/h5/plugins/jquery-bootgrid/jquery.bootgrid.fa.js}"></script>
+
+    <!-- Chosen -->
+    <script th:src="@{/h5/plugins/chosen/chosen.jquery.js}"></script>
+
+    <script th:src="@{/js/pages/bright.js}"></script>
+    <script th:src="@{/js/jquery.ext.serialize.form.js}"></script>
+    <script th:src="@{/bootstrap-treeview-1.2.0/bootstrap-treeview.js}"></script>
+    <script th:src="@{/bootstrap3-editable/js/bootstrap-editable.min.js}"></script>
+</th:block>
+
+<th:block th:fragment="breadcrumb">
+    <div class="col-xs-12">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li th:each="path,status : ${breadcrumb}" th:classappend="${status.last}? 'active'">
+                            <i class="fa fa-folder-open " th:if="${status.first}"></i>
+                            <i class="fa fa-file-o" th:if="!${status.first}"></i>
+                            <a href="#"  th:if="!${status.first}" th:attr="path=${path.url}" class="breadcrumb-link">
+                                <span th:text="${path.name}"/>
+                            </a>
+                            <span th:text="${path.name}" th:if="${status.first}"/>
+                        </li>
+                    </ol>
+                </div>
+                <div class=" col-sm-12 alert alert-info hide" style="padding:8px;margin-bottom:0px">
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-cmn-Hans">
+<head>
+<script src="lib/vue.min.js"></script>
+<script src="lib/vue-resource.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function() {
+    
+        $.ajax({
+          type: "POST",
+          contentType:"application/json;charset=utf-8",
+          url: "/folders",
+          success: function(json){
+              var $dfolder = $("#dfolder");
+              $(json).each(function(k, v){
+                var view = v.replace(new RegExp("\\_","gm"), "/");
+                $("<option value='" + view + "'>" + view + "</option>").appendTo($dfolder);
+              });
+          },
+          error: function(response){
+              BootstrapDialog.show(response.responseText);
+          }
+      });
+      
+        function loadGrid() {
+            $("#scheduleGrid").bootgrid({
+                ajax: true,
+                ajaxSettings: {
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "json"
+                },
+                post: function () {
+                    var data = {};
+                    return data;
+                },
+                requestHandler: function (request) {
+                    return JSON.stringify(request);
+                },
+                url: Bright.contextPath+"/schedules",
+                formatters: {
+                    "link": function (column, row) {
+                        var dHtml = "<a href='#' class='btn btn-danger btn-xs row-delete' data-id='" + row.id + "'>删除</a>";
+                        return dHtml;
+                    }
+                },
+                navigation: 0
+            }).on("loaded.rs.jquery.bootgrid", function (e) {
+                $('.row-delete').each(function (i, row) {
+                    $(row).click(function (e) {
+                        e.preventDefault(e);
+                        var caseName = $('[data-row-id="'+$(row).attr('data-id')+'"]').children().eq(0).text();
+                        delSchedule(caseName);
+                    });
+                });
+            });
+        }
+    
+        loadGrid();
+        
+        function delSchedule(caseName) {
+          $.ajax({
+              type: "POST",
+              contentType:"application/json;charset=utf-8",
+              url: "/delSchedule?caseName=" + caseName,
+              success: function(json){
+                  if (json && json.retMsg == "OK") {
+                      //myAlert(json.retMsg);
+                      Bright.loadPage("editSchedule");
+                  } else {
+                      myAlert(json.retMsg);
+                  }
+              },
+              error: function(response){
+                  myAlert(response.responseText);
+              }
+          });
+        }
+        
+        $("#arrangeSchedule").on("click", arrangeSchedule);
+        function arrangeSchedule() {
+          var caseFolder = $("#dfolder").val();
+          if ("请选择" == caseFolder) {
+            myAlert("请选择要测试的目录.");
+            return;
+          }
+          
+          $.ajax({
+              type: "POST",
+              contentType:"application/json;charset=utf-8",
+              url: "/arrangeSchedule?caseName=" + caseFolder,
+              success: function(json){
+                  if (json && json.retMsg == "OK") {
+                      //myAlert(json.retMsg);
+                      Bright.loadPage("editSchedule");
+                  } else {
+                      myAlert(json.retMsg);
+                  }
+              },
+              error: function(response){
+                  myAlert(response.responseText);
+              }
+          });
+        }
+        
+        function myAlert(msg){
+            BootstrapDialog.show({
+                title: '提示',
+                closable: false,
+                message: msg,
+                buttons:[{
+                    label:"关闭",
+                    action:function(selfDialog){
+                        selfDialog.close();
+                    }
+                }]
+            });
+        }
+        
+    });
+</script>
+</head>
+<body>
+<div class="container-fluid" id="app">
+    <div class="col-lg-12">
+        <div class="ibox-content">
+            <div class="form-group">
+              <div class="col-sm-3">
+                <select class="form-control" id="dfolder">
+                  <option>请选择</option>
+                </select>
+              </div>
+              <button class="btn btn-info" id="arrangeSchedule">添加</button>
+              <button class="btn btn-info" id="result" v-on:click="showResult">{{showEditButton}}</button>
+            </div>
+            <div><hr/></div>
+            <div v-if="showType==='edit'">
+	            <table id="scheduleGrid" class="table table-condensed table-hover table-striped"
+	                   style="word-break:break-all; word-wrap:break-all;">
+	                <thead>
+	                <tr>
+	                    <th data-column-id="id" data-visible="false">次序</th>
+	                    <th data-column-id="path">地址</th>
+	                    <th data-column-id="type">类型</th>
+	                    <th data-column-id="state">状态</th>
+	                    <th data-column-id="link" data-formatter="link" data-sortable="false">操作</th>
+	                </tr>
+	                </thead>
+	            </table>
+            </div>
+            <div v-else-if="showType==='result'">
+            	 <table id="scheduleGrid" class="table table-condensed table-hover table-striped"
+	                   style="word-break:break-all; word-wrap:break-all;">
+	                <thead>
+	                <tr>
+	                    <th data-column-id="id" data-visible="false">创建时间</th>
+	                    <th data-column-id="jobId">任务id</th>
+	                    <th data-column-id="name">名称</th>
+	                    <th data-column-id="path">地址</th>
+	                    <th data-column-id="serverIp">执行服务器IP</th>
+	                    <th data-column-id="state">状态</th>
+	                    <th data-column-id="state">操作</th>
+	                 
+	                </tr>
+	                </thead>
+	                <tr v-for="result in resultList">
+						<td>{{result.createTime}}</td>
+						<td>{{result.jobId}}</td>
+						<td>{{result.name}}</td>
+						<td>{{result.path}}</td>
+						<td>{{result.serverIp}}</td>
+						<td>
+							<div v-if="result.state==='0'">
+								执行成功
+							</div>
+							<div v-else-if="result.state==='1'">
+								执行中
+							</div>
+							<div v-else-if="result.state==='2'">
+								执行失败
+							</div>
+						</td>
+						
+						<td>
+							<div v-if="result.state==='0'">
+								<a :href="'report.html?path='+result.reportPath">下载</a>
+							</div>
+						</td>
+					</tr>
+	            </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+var app = new Vue({
+	  el: '#app',
+	  data: {
+		  showType: 'edit',
+		  showEditButton: '查看结果',
+		  resultUrl: '/arrange/result',
+		  resultList: [],
+	  },
+	  methods: {
+		  showResult: function showResult() {
+			  	//this.queryResult();
+			  	if(this.showType == 'edit'){
+					 this.showEditButton = '编辑';
+					 this.showType = 'result';
+					 this.$http.post(this.resultUrl, JSON.stringify({
+			                "id": '100'
+			            })).then(function (response) {
+			            	this.resultList = response.data.result;
+			            });
+			  	}else{
+			  		 this.showEditButton = '查看结果';
+					 this.showType = 'edit';	
+					
+			  	}
+		  },
+		  queryResult: function queryResult() {
+			  this.message = '查询执行结果';
+			  this.$http.post(this.resultUrl, JSON.stringify({
+	                "caseName": '查询'
+	            })).then(function (response) {
+	            	this.resultList = response.data.result;
+	            });
+		  },
+	  }
+})
+</script>
+</html>
+
