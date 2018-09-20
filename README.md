@@ -44,8 +44,9 @@ Selenium 是一个用于Web应用程序测试的工具，通过模拟用户操�
 
 ![image](images/editor_op.png) 
 
--文本模式编辑
-![image](images/editor_text.png) 
+-文本模式编辑 
+
+![image](images/step_text.png) 
 
 4.测试计划
 ![image](images/tests.png) 
